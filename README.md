@@ -5,5 +5,6 @@ It is a [vless protocol](https://xtls.github.io/en/config/outbounds/vless.html) 
 |--------|---------|
 | UUID | 6a3b62e2-1368-494d-b4d7-7d557c53baaa |
 | PORT | 8080 |
+| NEZHA | example.com 443 token --tls |
 ## Thanks
 - 3kmfi6hp/nodejs-proxy
