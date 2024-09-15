@@ -6,7 +6,7 @@ const errcb = (...args) => console.error.bind(this, ...args)
 const uuid = (
   process.env.UUID || '6a3b62e2-1368-494d-b4d7-7d557c53baaa'
 ).replace(/-/g, '')
-const port = process.env.PORT || 18619
+const port = process.env.PORT || 8080
 
 const wss = new WebSocket.Server({ port }, logcb('listen:', port))
 
