@@ -3,7 +3,7 @@ It is a [vless protocol](https://xtls.github.io/en/config/outbounds/vless.html) 
 ## Environment Variables
 | Variables | Example |
 |--------|---------|
-| UUID | 30e9c5c8-ed28-4cd9-b008-dc67277f8b02 |
-| HOST | edgetunnel-2z2.pages.dev |
+| UUID | 6a3b62e2-1368-494d-b4d7-7d557c53baaa |
+| PORT | 8080 |
 ## Thanks
 - 3kmfi6hp/nodejs-proxy
