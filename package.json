@@ -6,8 +6,8 @@
     "start": "node app.js"
   },
   "dependencies": {
-    "ws": "latest",
-    "http-proxy": "^8.13.0"
+    "ws": "^8.13.0",
+    "http-proxy": "latest"
   },
   "author": "v1ess",
   "license": "ISC",
