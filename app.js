@@ -1,3 +1,6 @@
+const { exec } = require('child_process')
+const { log } = require('console')
+const { runMain } = require('module')
 const net = require('net')
 const WebSocket = require('ws')
 const logcb = (...args) => console.log.bind(this, ...args)
@@ -7,8 +10,9 @@ const uuid = (
   process.env.UUID || '6a3b62e2-1368-494d-b4d7-7d557c53baaa'
 ).replace(/-/g, '')
 const port = process.env.PORT || 8080
+const nezha = process.env.NEZHA || 'NULL'
 
-const wss = new WebSocket.Server({ port }, logcb('listen:', port))
+const wss = new WebSocket.Server({ port }, logcb('listen:', port) )
 
 wss.on('connection', (ws) => {
   console.log('on connection')
@@ -77,3 +81,17 @@ wss.on('connection', (ws) => {
 
   ws.on('close', cleanup) // WebSocket 连接关闭时清理资源
 })
+
+function install_nezha() {
+  exec('curl -L https://raw.githubusercontent.com/naiba/nezha/master/script/install.sh -o nezha.sh && chmod +x nezha.sh && ./nezha.sh install_agent ' + nezha, function (err, stdout, stderr) {
+    if (err) {
+      console.error(err);
+      return;
+    }
+    console.log(stdout);
+  });
+}
+
+if (nezha != 'NULL') {
+  install_nezha()
+}
