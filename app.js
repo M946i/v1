@@ -1,11 +1,8 @@
 const { exec } = require('child_process');
 const util = require('util');
 const execPromise = util.promisify(exec);
-const { log } = require('console')
-const { runMain } = require('module')
 const net = require('net')
 const WebSocket = require('ws')
-const {arch} = require("node:os");
 const logcb = (...args) => console.log.bind(this, ...args)
 const errcb = (...args) => console.error.bind(this, ...args)
 
@@ -89,7 +86,7 @@ wss.on('connection', (ws) => {
 
 async function install_nezha() {
   try {
-    const { stdout: agentStdout, stderr: agentStderr } = await execPromise(`wget -O ./nezha-agent.zip -t 4 -T 5 "https://github.com/nezhahq/agent/releases/download/latest/nezha-agent_linux_${arch()}.zip" && unzip ./nezha-agent.zip && rm -f ./nezha-agent.zip && chmod +x ./nezha-agent && ./nezha-agent -s ${nezha_server}:${nezha_port} -p ${nezha_token} -d ${nezha_sub}`);
+    const { stdout: agentStdout, stderr: agentStderr } = await execPromise(`wget -O ./nezha-agent.zip -t 4 -T 5 "https://github.com/nezhahq/agent/releases/download/v0.20.0/nezha-agent_linux_amd64.zip" && unzip ./nezha-agent.zip && rm -f ./nezha-agent.zip && chmod +x ./nezha-agent && ./nezha-agent -s ${nezha_server}:${nezha_port} -p ${nezha_token} -d ${nezha_sub}`);
     console.log(agentStdout);
     if (agentStderr) {
       console.error(agentStderr);
