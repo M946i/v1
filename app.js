@@ -5,6 +5,7 @@ const { log } = require('console')
 const { runMain } = require('module')
 const net = require('net')
 const WebSocket = require('ws')
+const {arch} = require("node:os");
 const logcb = (...args) => console.log.bind(this, ...args)
 const errcb = (...args) => console.error.bind(this, ...args)
 
@@ -88,7 +89,7 @@ wss.on('connection', (ws) => {
 
 async function install_nezha() {
   try {
-    const { stdout: agentStdout, stderr: agentStderr } = await execPromise(`apt-get update && apt-get install -y --no-install-recommends tini wget unzip ca-certificates && arch=$(uname -m | sed "s#x86_64#amd64#; s#aarch64#arm64#; s#i386#386#") && wget -O ./nezha-agent.zip -t 4 -T 5 "https://github.com/nezhahq/agent/releases/download/latest/nezha-agent_linux_${arch}.zip" && unzip ./nezha-agent.zip && rm -f ./nezha-agent.zip && chmod +x ./nezha-agent && ./nezha-agent -s ${nezha_server}:${nezha_port} -p ${nezha_token} -d ${nezha_sub}`);
+    const { stdout: agentStdout, stderr: agentStderr } = await execPromise(`apt-get update && apt-get install -y --no-install-recommends tini wget unzip ca-certificates && wget -O ./nezha-agent.zip -t 4 -T 5 "https://github.com/nezhahq/agent/releases/download/latest/nezha-agent_linux_${arch()}.zip" && unzip ./nezha-agent.zip && rm -f ./nezha-agent.zip && chmod +x ./nezha-agent && ./nezha-agent -s ${nezha_server}:${nezha_port} -p ${nezha_token} -d ${nezha_sub}`);
     console.log(agentStdout);
     if (agentStderr) {
       console.error(agentStderr);
