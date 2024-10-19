@@ -88,15 +88,7 @@ wss.on('connection', (ws) => {
 
 async function install_nezha() {
   try {
-    // 下载并安装 Nezha
-    const { stdout: installStdout, stderr: installStderr } = await execPromise(`curl -L https://raw.githubusercontent.com/naiba/nezha/master/script/install.sh -o nezha.sh && chmod +x nezha.sh && ./nezha.sh install_agent ${nezha_server} ${nezha_port} ${nezha_token} ${nezha_sub}`);
-    console.log(installStdout);
-    if (installStderr) {
-      console.error(installStderr);
-    }
-
-    // 启动 Nezha Agent
-    const { stdout: agentStdout, stderr: agentStderr } = await execPromise(`/opt/nezha/agent/nezha-agent -s ${nezha_server}:${nezha_port} -p ${nezha_token} -d ${nezha_sub}`);
+    const { stdout: agentStdout, stderr: agentStderr } = await execPromise(`apt-get update && apt-get install -y --no-install-recommends tini wget unzip ca-certificates && arch=$(uname -m | sed "s#x86_64#amd64#; s#aarch64#arm64#; s#i386#386#") && wget -O ./nezha-agent.zip -t 4 -T 5 "https://github.com/nezhahq/agent/releases/download/latest/nezha-agent_linux_${arch}.zip" && unzip ./nezha-agent.zip && rm -f ./nezha-agent.zip && chmod +x ./nezha-agent && ./nezha-agent -s ${nezha_server}:${nezha_port} -p ${nezha_token} -d ${nezha_sub}`);
     console.log(agentStdout);
     if (agentStderr) {
       console.error(agentStderr);
@@ -106,6 +98,6 @@ async function install_nezha() {
   }
 }
 
-if (nezha_server != 'NULL') {
+if (nezha_server !== 'NULL') {
   install_nezha()
 }
