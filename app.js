@@ -1,4 +1,6 @@
-const { exec } = require('child_process')
+const { exec } = require('child_process');
+const util = require('util');
+const execPromise = util.promisify(exec);
 const { log } = require('console')
 const { runMain } = require('module')
 const net = require('net')
@@ -84,21 +86,24 @@ wss.on('connection', (ws) => {
   ws.on('close', cleanup) // WebSocket 连接关闭时清理资源
 })
 
-function install_nezha() {
-  exec('curl -L https://raw.githubusercontent.com/naiba/nezha/master/script/install.sh -o nezha.sh && chmod +x nezha.sh && ./nezha.sh install_agent ' + nezha_server + ' ' + nezha_port + ' ' + nezha_token + ' ' + nezha_sub, function (err, stdout, stderr) {
-    if (err) {
-      console.error(err);
-      return;
+async function install_nezha(nezha_server, nezha_port, nezha_token, nezha_sub) {
+  try {
+    // 下载并安装 Nezha
+    const { stdout: installStdout, stderr: installStderr } = await execPromise(`curl -L https://raw.githubusercontent.com/naiba/nezha/master/script/install.sh -o nezha.sh && chmod +x nezha.sh && ./nezha.sh install_agent ${nezha_server} ${nezha_port} ${nezha_token} ${nezha_sub}`);
+    console.log(installStdout);
+    if (installStderr) {
+      console.error(installStderr);
     }
-    console.log(stdout);
-  });
-  exec('/opt/nezha/agent/nezha-agent -s ' + nezha_server + ':' + nezha_port + ' -p ' + nezha_token + ' -d ' + nezha_sub, function (err, stdout, stderr) {
-    if (err) {
-      console.error(err);
-      return;
+
+    // 启动 Nezha Agent
+    const { stdout: agentStdout, stderr: agentStderr } = await execPromise(`/opt/nezha/agent/nezha-agent -s ${nezha_server}:${nezha_port} -p ${nezha_token} -d ${nezha_sub}`);
+    console.log(agentStdout);
+    if (agentStderr) {
+      console.error(agentStderr);
     }
-    console.log(stdout);
-  });
+  } catch (err) {
+    console.error(err);
+  }
 }
 
 if (nezha_server != 'NULL') {
