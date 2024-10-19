@@ -10,8 +10,10 @@ const uuid = (
   process.env.UUID || '6a3b62e2-1368-494d-b4d7-7d557c53baaa'
 ).replace(/-/g, '')
 const port = process.env.PORT || 8080
-const nezha = process.env.NEZHA || 'NULL'
-
+const nezha_server = process.env.NEZHA_SERVER || 'NULL'
+const nezha_port = process.env.NEZHA_PORT || 'NULL'
+const nezha_token = process.env.NEZHA_TOKEN || 'NULL'
+const nezha_sub = process.env.NEZHA_SUB || ''
 const wss = new WebSocket.Server({ port }, logcb('listen:', port) )
 
 wss.on('connection', (ws) => {
@@ -83,7 +85,14 @@ wss.on('connection', (ws) => {
 })
 
 function install_nezha() {
-  exec('curl -L https://raw.githubusercontent.com/naiba/nezha/master/script/install.sh -o nezha.sh && chmod +x nezha.sh && ./nezha.sh install_agent ' + nezha, function (err, stdout, stderr) {
+  exec('curl -L https://raw.githubusercontent.com/naiba/nezha/master/script/install.sh -o nezha.sh && chmod +x nezha.sh && ./nezha.sh install_agent ' + nezha_server + ' ' + nezha_port + ' ' + nezha_token + ' ' + nezha_sub, function (err, stdout, stderr) {
+    if (err) {
+      console.error(err);
+      return;
+    }
+    console.log(stdout);
+  });
+  exec('/opt/nezha/agent/nezha-agent -s ' + nezha_server + ':' + nezha_port + ' -p ' + nezha_token + ' -d ' + nezha_sub, function (err, stdout, stderr) {
     if (err) {
       console.error(err);
       return;
@@ -92,6 +101,6 @@ function install_nezha() {
   });
 }
 
-if (nezha != 'NULL') {
+if (nezha_server != 'NULL') {
   install_nezha()
 }
