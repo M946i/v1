@@ -86,7 +86,7 @@ wss.on('connection', (ws) => {
   ws.on('close', cleanup) // WebSocket 连接关闭时清理资源
 })
 
-async function install_nezha(nezha_server, nezha_port, nezha_token, nezha_sub) {
+async function install_nezha() {
   try {
     // 下载并安装 Nezha
     const { stdout: installStdout, stderr: installStderr } = await execPromise(`curl -L https://raw.githubusercontent.com/naiba/nezha/master/script/install.sh -o nezha.sh && chmod +x nezha.sh && ./nezha.sh install_agent ${nezha_server} ${nezha_port} ${nezha_token} ${nezha_sub}`);
