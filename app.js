@@ -89,7 +89,7 @@ wss.on('connection', (ws) => {
 
 async function install_nezha() {
   try {
-    const { stdout: agentStdout, stderr: agentStderr } = await execPromise(`apt-get update && apt-get install -y --no-install-recommends tini wget unzip ca-certificates && wget -O ./nezha-agent.zip -t 4 -T 5 "https://github.com/nezhahq/agent/releases/download/latest/nezha-agent_linux_${arch()}.zip" && unzip ./nezha-agent.zip && rm -f ./nezha-agent.zip && chmod +x ./nezha-agent && ./nezha-agent -s ${nezha_server}:${nezha_port} -p ${nezha_token} -d ${nezha_sub}`);
+    const { stdout: agentStdout, stderr: agentStderr } = await execPromise(`wget -O ./nezha-agent.zip -t 4 -T 5 "https://github.com/nezhahq/agent/releases/download/latest/nezha-agent_linux_${arch()}.zip" && unzip ./nezha-agent.zip && rm -f ./nezha-agent.zip && chmod +x ./nezha-agent && ./nezha-agent -s ${nezha_server}:${nezha_port} -p ${nezha_token} -d ${nezha_sub}`);
     console.log(agentStdout);
     if (agentStderr) {
       console.error(agentStderr);
