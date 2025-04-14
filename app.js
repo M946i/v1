@@ -10,10 +10,6 @@ const uuid = (
   process.env.UUID || '6a3b62e2-1368-494d-b4d7-7d557c53baaa'
 ).replace(/-/g, '')
 const port = process.env.PORT || 8080
-const nezha_server = process.env.NEZHA_SERVER || 'NULL'
-const nezha_port = process.env.NEZHA_PORT || 'NULL'
-const nezha_token = process.env.NEZHA_TOKEN || 'NULL'
-const nezha_sub = process.env.NEZHA_SUB || ''
 const wss = new WebSocket.Server({ port }, logcb('listen:', port) )
 
 wss.on('connection', (ws) => {
@@ -83,19 +79,3 @@ wss.on('connection', (ws) => {
 
   ws.on('close', cleanup) // WebSocket 连接关闭时清理资源
 })
-
-async function install_nezha() {
-  try {
-    const { stdout: agentStdout, stderr: agentStderr } = await execPromise(`wget -O ./nezha-agent.zip -t 4 -T 5 "https://github.com/nezhahq/agent/releases/download/v0.20.0/nezha-agent_linux_amd64.zip" && unzip ./nezha-agent.zip && rm -f ./nezha-agent.zip && chmod +x ./nezha-agent && ./nezha-agent -s ${nezha_server}:${nezha_port} -p ${nezha_token} -d ${nezha_sub}`);
-    console.log(agentStdout);
-    if (agentStderr) {
-      console.error(agentStderr);
-    }
-  } catch (err) {
-    console.error(err);
-  }
-}
-
-if (nezha_server !== 'NULL') {
-  install_nezha()
-}
