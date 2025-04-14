@@ -1,5 +1,5 @@
 {
-  "name": "v1ess-node",
+  "name": "v1",
   "version": "1.0.0",
   "main": "app.js",
   "scripts": {
@@ -8,8 +8,5 @@
   "dependencies": {
     "ws": "^8.13.0",
     "http-proxy": "latest"
-  },
-  "author": "v1ess",
-  "license": "ISC",
-  "description": ""
+  }
 }
