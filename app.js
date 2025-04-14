@@ -1,6 +1,5 @@
 const { exec } = require('child_process');
 const util = require('util');
-const execPromise = util.promisify(exec);
 const net = require('net');
 const WebSocket = require('ws');
 const https = require('https');
