@@ -35,7 +35,7 @@ jobs:
         uses: denoland/deployctl@v1
         with:
           project: "m946i-v1-88"
-          entrypoint: "app.js"
+          entrypoint: "node app.js"
           root: ""
           
           
